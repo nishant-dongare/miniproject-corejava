@@ -2,9 +2,9 @@ package screens;
 
 import java.util.Scanner;
 
-import esa.model.ClassRooms;
-import esa.model.Student;
 import functions.Rooms;
+import models.ClassRooms;
+import models.Student;
 
 public class User {
 

@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import esa.model.ClassRooms;
-import esa.model.Student;
-import esa.model.StudentsData;
+import models.ClassRooms;
+import models.Student;
+import models.StudentsDao;
 
 public class Rooms {
 
@@ -44,41 +44,41 @@ public class Rooms {
 			return;
 		}
 
-		int index = StudentsData.getStudents().indexOf(searchresult);
+		int index = StudentsDao.getStudents().indexOf(searchresult);
 		List<Student> sublist;
-		if ((StudentsData.getStudents().size()) > (index + 30))
-			sublist = StudentsData.getStudents().subList(index, index + 30);
+		if ((StudentsDao.getStudents().size()) > (index + 30))
+			sublist = StudentsDao.getStudents().subList(index, index + 30);
 		else
-			sublist = StudentsData.getStudents().subList(index, StudentsData.getStudents().size());
+			sublist = StudentsDao.getStudents().subList(index, StudentsDao.getStudents().size());
 		ClassRooms.addClassRoom(block, new ArrayList<Student>(sublist));
 		System.out.println("\nClassRoom inserted successfully\n");
 	}
 
-	static public int exportClassRooms() {
+	static public boolean exportClassRooms() {
 		try {
 			FileOutputStream file = new FileOutputStream(filename);
 			ObjectOutputStream out = new ObjectOutputStream(file);
 			out.writeObject(ClassRooms.getClassrooms());
 			out.close();
 			file.close();
-			return 1;
+			return true;
 		} catch (Exception e) {
 			System.out.println("\nErr : Data could not export\n");
-			return 0;
+			return false;
 		}
 	}
 
-	static public int importClassRooms() {
+	static public boolean importClassRooms() {
 		try {
 			FileInputStream file = new FileInputStream(filename);
 			ObjectInputStream on = new ObjectInputStream(file);
 			ClassRooms.setClassrooms((HashMap<Integer, ArrayList<Student>>) on.readObject());
 			on.close();
 			file.close();
-			return 1;
+			return true;
 		} catch (Exception e) {
 			System.out.println("\nErr : Data could not import\n");
-			return 0;
+			return false;
 		}
 	}
 

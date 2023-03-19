@@ -3,28 +3,22 @@ package functions;
 import java.util.Optional;
 import java.util.Scanner;
 
-import esa.model.Student;
-import esa.model.StudentsData;
+import models.Student;
+import models.StudentsDao;
 
 public class Search {
 
 	public Search() {
-		if (StudentsData.isEmpty()) {
+		if (StudentsDao.isEmpty()) {
 			System.out.println("\nCSV File is not imported");
 			return;
 		}
 		Scanner sc = new Scanner(System.in);
 
-		System.out.print("\n*** Search Student ***\n\nEnter your Enrollment or Seat No\nPress Enter 0 to exit :");
+		System.out.print("\n*** Search Student ***\n\nEnter your search string\n");
 		String searchkey = sc.next();
 
 		Student s;
-
-//		if (searchkey.chars().allMatch(Character::isDigit)) {
-//			s = searchStudentByEnroll(Integer.parseInt(searchkey));
-//		} else {
-//			s = searchStudentBySeatNo(searchkey);
-//		}
 
 		try {
 			s = searchStudentByEnroll(Integer.parseInt(searchkey));
@@ -36,7 +30,7 @@ public class Search {
 	}
 
 	public static Student searchStudentByEnroll(int searchkey) {
-		Optional<Student> ls = StudentsData.getStudents().stream().filter(student -> student.getEnroll() == searchkey)
+		Optional<Student> ls = StudentsDao.getStudents().stream().filter(student -> student.getEnroll() == searchkey)
 				.findFirst();
 		if (ls.isEmpty()) {
 			System.out.println("Pls check Enrollment Number again!");
@@ -46,7 +40,7 @@ public class Search {
 	}
 
 	public static Student searchStudentBySeatNo(String searchkey) {
-		Optional<Student> ls = StudentsData.getStudents().stream()
+		Optional<Student> ls = StudentsDao.getStudents().stream()
 				.filter(student -> searchkey.equalsIgnoreCase(student.getSeatno())).findFirst();
 
 		if (ls.isEmpty()) {

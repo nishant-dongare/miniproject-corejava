@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import esa.model.Student;
-import esa.model.StudentsData;
+import models.Student;
+import models.StudentsDao;
 
 public class ImportCSV {
 
@@ -29,7 +29,7 @@ public class ImportCSV {
 				String sirName = sc.next().strip();
 				String motherName = sc.next().strip();
 				Student s = new Student(enroll, dept, year, seatno, firstName, middleName, sirName, motherName);
-				StudentsData.insert(s);
+				StudentsDao.insert(s);
 			}
 			sc.close();
 			System.out.println("\nCSV imported successfully");
@@ -39,8 +39,4 @@ public class ImportCSV {
 			System.out.println(e);
 		}
 	}
-
-//	public ArrayList<Student> getStudents() {
-//		return students;
-//	}
 }

@@ -1,4 +1,4 @@
-package esa.model;
+package models;
 
 import java.io.Serializable;
 
@@ -47,7 +47,7 @@ public class Student implements Comparable<Student>, Serializable {
 
 	public Student(int enroll, String dept, String year, String seatno, String firstName, String middleName,
 			String sirName, String motherName) {
-		super();
+//		super();
 		this.enroll = enroll;
 		this.dept = dept;
 		this.year = year;
@@ -58,14 +58,20 @@ public class Student implements Comparable<Student>, Serializable {
 		this.motherName = motherName;
 	}
 
+	public int compareTo(Student s) {
+		return this.seatno.compareToIgnoreCase(s.seatno);
+	}
+
+	public boolean matchString(String s) {
+		return (dept.equalsIgnoreCase(s) || year.equalsIgnoreCase(s) || seatno.equalsIgnoreCase(s)
+				|| firstName.equalsIgnoreCase(s) || middleName.equalsIgnoreCase(s) || sirName.equalsIgnoreCase(s)
+				|| motherName.equalsIgnoreCase(s));
+	}
+
 	@Override
 	public String toString() {
 		return "\nStudent enroll=" + enroll + ", dept=" + dept + ", year=" + year + ", seatno=" + seatno
 				+ ", firstName=" + firstName + ", middleName=" + middleName + ", sirName=" + sirName + ", motherName="
 				+ motherName;
-	}
-
-	public int compareTo(Student s) {
-		return this.seatno.compareToIgnoreCase(s.seatno);
 	}
 }

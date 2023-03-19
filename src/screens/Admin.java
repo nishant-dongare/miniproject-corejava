@@ -2,10 +2,9 @@ package screens;
 
 import java.util.Scanner;
 
-import esa.model.StudentsData;
 import functions.ImportCSV;
 import functions.Rooms;
-import functions.Search;
+import models.StudentsDao;
 
 class Admin {
 
@@ -16,7 +15,7 @@ class Admin {
 		while (flag) {
 			int choice = 0;
 			System.out.print(
-					"\n*** Admin Panel ***\n\n1.Import CSV \n2.Save Students Data \n3.Search Student \n4.Assign ClassRoom \n5.Import ClassRoom Data \n6.Export ClassRoom Data \n7.Show All ClassRooms \nEnter your choice or Press 0 to exit : ");
+					"\n*** Admin Panel ***\n\n1.Import CSV \n2.Save Students Data \n3.Search Student \n4.Assign ClassRoom \n5.Import ClassRoom Data \n6.Export ClassRoom Data \n7.Show All ClassRooms \nEnter your choice : ");
 			try {
 				choice = sc.nextInt();
 			} catch (Exception ime) {
@@ -29,11 +28,12 @@ class Admin {
 				break;
 
 			case 2:
-				new StudentsData().saveStudentsData();
+				new StudentsDao().saveStudentsData();
 				break;
 
 			case 3:
-				new Search();
+//				new Search();
+				new StudentsDao().searchStudents();
 				break;
 
 			case 4:
@@ -41,12 +41,12 @@ class Admin {
 				break;
 
 			case 5:
-				if (Rooms.importClassRooms() == 1)
+				if (Rooms.importClassRooms())
 					System.out.println("\nData Imported Successfully\n");
 				break;
 
 			case 6:
-				if (Rooms.exportClassRooms() == 1)
+				if (Rooms.exportClassRooms())
 					System.out.println("\nData Exported Successfully\n");
 				break;
 

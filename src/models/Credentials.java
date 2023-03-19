@@ -1,4 +1,4 @@
-package esa.model;
+package models;
 
 final public class Credentials {
 	public final static String ADMIN_USER = "admin";
