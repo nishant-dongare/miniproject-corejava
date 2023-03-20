@@ -3,8 +3,10 @@ package functions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -15,8 +17,9 @@ public class Search {
 
 	public Search() {
 		if (StudentsDao.isEmpty()) {
-			System.out.println("\nCSV File is not imported");
-			return;
+			new StudentsDao().readData();
+//			System.out.println("\nCSV File is not imported");
+//			return;
 		}
 		Scanner sc = new Scanner(System.in);
 
@@ -73,10 +76,11 @@ public class Search {
 //						innerMap.put(searchQuery, 1);
 						frequencies.put(std.getEnroll(), innerMap);
 					} else {
-//						Map<String, Integer> innerMap = frequencies.get(std.getEnroll());
+						Map<String, Integer> innerMap = frequencies.get(std.getEnroll());
 //						innerMap.put(searchQuery, innerMap.get(searchQuery) + 1);
-//						int count = innerMap.get(searchQuery);
-//						frequencies.put(std.getEnroll(), innerMap);
+//						innerMap.put(searchQuery, 1+innerMap.get(searchQuery));
+						innerMap.put(searchQuery, 1);
+						frequencies.put(std.getEnroll(), innerMap);
 					}
 				}
 			}
@@ -94,8 +98,19 @@ public class Search {
 		if (sortedEntries.isEmpty()) {
 			System.out.println("\nNo entries found");
 		} else {
-			Student s = Search.searchStudentByEnroll(sortedEntries.iterator().next().getKey());
-			int bestMatchCounter = 0;
+			Iterator<Entry<Integer, Map<String, Integer>>>  itr = sortedEntries.iterator();
+			int currentCount = 0 ,prevCount = 0;
+			do {
+				Entry<Integer, Map<String, Integer>> entry = itr.next();
+				int enroll = entry.getKey();
+				prevCount=currentCount;
+				currentCount = entry.getValue().values().stream().mapToInt(Integer::intValue).sum();
+				ls.add(Search.searchStudentByEnroll(enroll));
+			}while(currentCount>=prevCount && itr.hasNext());
+			sortedEntries.iterator().next().getValue().values().stream().mapToInt(Integer::intValue).sum();
+			
+//			Student s = Search.searchStudentByEnroll(sortedEntries.iterator().next().getKey());
+			for(Student s : ls)
 			System.out.println(s);
 		}
 	}
