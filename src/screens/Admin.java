@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import functions.ImportCSV;
 import functions.Rooms;
+import functions.Search;
 import models.StudentsDao;
 
 class Admin {
@@ -32,8 +33,7 @@ class Admin {
 				break;
 
 			case 3:
-//				new Search();
-				new StudentsDao().searchStudents();
+				new Search();
 				break;
 
 			case 4:

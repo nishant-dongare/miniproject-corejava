@@ -1,5 +1,10 @@
 package functions;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -18,12 +23,12 @@ public class Search {
 		System.out.print("\n*** Search Student ***\n\nEnter your search string\n");
 		String searchkey = sc.next();
 
-		Student s;
+		Student s = null;
 
 		try {
 			s = searchStudentByEnroll(Integer.parseInt(searchkey));
 		} catch (NumberFormatException nfe) {
-			s = searchStudentBySeatNo(searchkey);
+			searchStudents(searchkey);
 		}
 		if (s != null)
 			System.out.println(s);
@@ -49,4 +54,50 @@ public class Search {
 		}
 		return ls.get();
 	}
+
+	public void searchStudents(String strings) {
+
+		if (strings == null) {
+			System.out.println("Enter Search String : ");
+			strings = new Scanner(System.in).nextLine();
+		}
+		String[] searchQueries = strings.toLowerCase().split(",|\\s+");
+//		System.out.println(Arrays.toString(searchQueries));
+		Map<Integer, Map<String, Integer>> frequencies = new HashMap<>();
+		for (Student std : StudentsDao.getStudents()) {
+			for (String searchQuery : searchQueries) {
+				if (std.matchString(searchQuery)) {
+					if (frequencies.get(std.getEnroll()) == null) {
+						Map<String, Integer> innerMap = new HashMap<>();
+						innerMap.put(searchQuery, 1);
+//						innerMap.put(searchQuery, 1);
+						frequencies.put(std.getEnroll(), innerMap);
+					} else {
+//						Map<String, Integer> innerMap = frequencies.get(std.getEnroll());
+//						innerMap.put(searchQuery, innerMap.get(searchQuery) + 1);
+//						int count = innerMap.get(searchQuery);
+//						frequencies.put(std.getEnroll(), innerMap);
+					}
+				}
+			}
+		}
+
+		// Step 3: Sort the hash table in descending order of frequency count
+		List<Map.Entry<Integer, Map<String, Integer>>> sortedEntries = new ArrayList<>(frequencies.entrySet());
+		Collections.sort(sortedEntries, (e1, e2) -> {
+			int s1 = e1.getValue().values().stream().mapToInt(Integer::intValue).sum();
+			int s2 = e2.getValue().values().stream().mapToInt(Integer::intValue).sum();
+			return Integer.compare(s2, s1);
+		});
+
+		List<Student> ls = new ArrayList<>();
+		if (sortedEntries.isEmpty()) {
+			System.out.println("\nNo entries found");
+		} else {
+			Student s = Search.searchStudentByEnroll(sortedEntries.iterator().next().getKey());
+			int bestMatchCounter = 0;
+			System.out.println(s);
+		}
+	}
+
 }
